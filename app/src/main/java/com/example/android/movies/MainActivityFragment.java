@@ -1,5 +1,6 @@
 package com.example.android.movies;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -13,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -54,8 +54,13 @@ public class MainActivityFragment extends Fragment {
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getActivity(), "" + position,
-                        Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getActivity(), "" + position,
+//                        Toast.LENGTH_SHORT).show();
+
+                String forecast = imageAdapter.getItem(position);
+                Intent intent = new Intent(getActivity(), DetailActivity.class)
+                        .putExtra(Intent.EXTRA_TEXT, forecast);
+                startActivity(intent);
             }
         });
 
@@ -220,12 +225,12 @@ public class MainActivityFragment extends Fragment {
         protected void onPostExecute(String[] result) {
             super.onPostExecute(result);
 
-            if (result != null){
+            if (result != null) {
                 final String BASE_URL = "http://image.tmdb.org/t/p/";
                 final String SIZE = "w185";
                 String[] uriPoster = new String[result.length];
 
-                for (int i = 0; i < result.length; i++){
+                for (int i = 0; i < result.length; i++) {
                     String[] movie = result[i].split(" -- ");
                     String poster = movie[1];
 
@@ -238,7 +243,7 @@ public class MainActivityFragment extends Fragment {
                     uriPoster[i] = builtUri.toString();
                 }
 
-                imageAdapter = new ImageAdapter(rootView.getContext(), uriPoster);
+                imageAdapter = new ImageAdapter(rootView.getContext(), uriPoster, result);
                 gridview.setAdapter(imageAdapter);
             }
 

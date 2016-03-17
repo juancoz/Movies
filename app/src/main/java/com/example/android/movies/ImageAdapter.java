@@ -15,6 +15,7 @@ import com.bumptech.glide.Glide;
 public class ImageAdapter extends BaseAdapter {
     private Context mContext;
     private String[] mImageString;
+    private String[] mResults;
     private boolean mFlag;
 
     public ImageAdapter(Context c) {
@@ -22,9 +23,10 @@ public class ImageAdapter extends BaseAdapter {
         mFlag = false;
     }
 
-    public ImageAdapter(Context c, String[] images){
+    public ImageAdapter(Context c, String[] images, String[] results){
         mContext = c;
         mImageString = images;
+        mResults = results;
         mFlag = true;
     }
 
@@ -36,8 +38,15 @@ public class ImageAdapter extends BaseAdapter {
         }
     }
 
-    public Object getItem(int position) {
-        return null;
+    public String getItem(int position) {
+        String resultItem;
+
+        if (mResults != null){
+            resultItem = mResults[position];
+            return resultItem;
+        }else {
+            return null;
+        }
     }
 
     public long getItemId(int position) {
