@@ -1,5 +1,6 @@
 package com.example.android.movies;
 
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -64,18 +65,18 @@ public class MainActivityFragment extends Fragment {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_refresh) {
             FetchMovieTask movieTask = new FetchMovieTask();
-            movieTask.execute();
+            movieTask.execute("popular");
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    public class FetchMovieTask extends AsyncTask<Void, Void, Void> {
+    public class FetchMovieTask extends AsyncTask<String, Void, Void> {
 
         private final String LOG_TAG = FetchMovieTask.class.getSimpleName();
 
         @Override
-        protected Void doInBackground(Void... params) {
+        protected Void doInBackground(String... params) {
             // These two need to be declared outside the try/catch
             // so that they can be closed in the finally block.
             HttpURLConnection urlConnection = null;
@@ -88,9 +89,18 @@ public class MainActivityFragment extends Fragment {
                 // Construct the URL for the OpenWeatherMap query
                 // Possible parameters are avaiable at OWM's forecast API page, at
                 // http://openweathermap.org/API#forecast
-                String baseUrl = "http://api.themoviedb.org/3/movie/popular?";
-                String apiKey = "api_key=" + BuildConfig.OPEN_MOVIES_API_KEY;
-                URL url = new URL(baseUrl.concat(apiKey));
+                final String BASE_URL = "http://api.themoviedb.org/3/movie";
+                final String ORDER = "";
+                final String API_KEY = "api_key";
+
+                Uri builtUri = Uri.parse(BASE_URL).buildUpon()
+                        .appendPath(params[0])
+                        .appendQueryParameter(API_KEY, BuildConfig.OPEN_MOVIES_API_KEY)
+                        .build();
+
+                URL url = new URL(builtUri.toString());
+
+                Log.v(LOG_TAG, "Built URI " + builtUri.toString());
 
                 // Create the request to OpenWeatherMap, and open the connection
                 urlConnection = (HttpURLConnection) url.openConnection();
