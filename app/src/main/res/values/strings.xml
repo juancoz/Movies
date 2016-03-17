@@ -4,4 +4,5 @@
     <string name="imageview_movie">Movie</string>
     <string name="action_refresh">Refresh</string>
     <string name="title_activity_detail">DetailActivity</string>
+    <string name="title_activity_settings">Settings</string>
 </resources>
