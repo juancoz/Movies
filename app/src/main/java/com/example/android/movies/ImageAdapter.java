@@ -23,7 +23,7 @@ public class ImageAdapter extends BaseAdapter {
         mFlag = false;
     }
 
-    public ImageAdapter(Context c, String[] images, String[] results){
+    public ImageAdapter(Context c, String[] images, String[] results) {
         mContext = c;
         mImageString = images;
         mResults = results;
@@ -33,7 +33,7 @@ public class ImageAdapter extends BaseAdapter {
     public int getCount() {
         if (mFlag) {
             return mImageString.length;
-        }else{
+        } else {
             return mThumbIds.length;
         }
     }
@@ -41,10 +41,10 @@ public class ImageAdapter extends BaseAdapter {
     public String getItem(int position) {
         String resultItem;
 
-        if (mResults != null){
+        if (mResults != null) {
             resultItem = mResults[position];
             return resultItem;
-        }else {
+        } else {
             return null;
         }
     }
@@ -64,9 +64,9 @@ public class ImageAdapter extends BaseAdapter {
 
         imageView = (ImageView) convertView.findViewById(R.id.grid_item_forecast_imageview);
         // imageView.setImageResource(mThumbIds[position]);
-        if (mFlag){
+        if (mFlag) {
             Glide.with(imageView.getContext()).load(mImageString[position]).into(imageView);
-        }else {
+        } else {
             Glide.with(imageView.getContext()).load(mThumbIds[position]).into(imageView);
         }
         return imageView;

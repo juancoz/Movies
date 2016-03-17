@@ -1,9 +1,11 @@
 package com.example.android.movies;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -48,8 +50,8 @@ public class MainActivityFragment extends Fragment {
         rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
         gridview = (GridView) rootView.findViewById(R.id.gridview);
-        imageAdapter = new ImageAdapter(rootView.getContext());
-        gridview.setAdapter(imageAdapter);
+//        imageAdapter = new ImageAdapter(rootView.getContext());
+//        gridview.setAdapter(imageAdapter);
 
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -79,11 +81,26 @@ public class MainActivityFragment extends Fragment {
         int id = item.getItemId();
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_refresh) {
-            FetchMovieTask movieTask = new FetchMovieTask();
-            movieTask.execute("popular");
+            updateMovies();
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void updateMovies() {
+        FetchMovieTask movieTask = new FetchMovieTask();
+        // movieTask.execute("popular");
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String order = prefs.getString(getString(R.string.pref_movies_key),
+                getString(R.string.pref_movies_popular));
+        movieTask.execute(order);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        updateMovies();
     }
 
     public class FetchMovieTask extends AsyncTask<String, Void, String[]> {
@@ -245,13 +262,6 @@ public class MainActivityFragment extends Fragment {
 
                 imageAdapter = new ImageAdapter(rootView.getContext(), uriPoster, result);
                 gridview.setAdapter(imageAdapter);
-            }
-
-            if (result != null) {
-                for (String dayForecastStr : result) {
-                    // mForecastAdapter.add(dayForecastStr);
-                }
-                // New data is back from the server.  Hooray!
             }
         }
     }
