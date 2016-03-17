@@ -63,14 +63,16 @@ public class MainActivityFragment extends Fragment {
         int id = item.getItemId();
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_refresh) {
+            FetchMovieTask movieTask = new FetchMovieTask();
+            movieTask.execute();
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    public class FetchMoviesTask extends AsyncTask<Void, Void, Void> {
+    public class FetchMovieTask extends AsyncTask<Void, Void, Void> {
 
-        private final String LOG_TAG = FetchMoviesTask.class.getSimpleName();
+        private final String LOG_TAG = FetchMovieTask.class.getSimpleName();
 
         @Override
         protected Void doInBackground(Void... params) {
@@ -117,6 +119,9 @@ public class MainActivityFragment extends Fragment {
                     return null;
                 }
                 forecastJsonStr = buffer.toString();
+
+                Log.v(LOG_TAG, "Forecast JSON string: " + forecastJsonStr);
+
             } catch (IOException e) {
                 Log.e(LOG_TAG, "Error ", e);
                 // If the code didn't successfully get the weather data, there's no point in attemping
