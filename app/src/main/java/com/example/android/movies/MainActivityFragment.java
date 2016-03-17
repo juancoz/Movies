@@ -15,6 +15,10 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -71,12 +75,55 @@ public class MainActivityFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
-    public class FetchMovieTask extends AsyncTask<String, Void, Void> {
+    public class FetchMovieTask extends AsyncTask<String, Void, String[]> {
 
         private final String LOG_TAG = FetchMovieTask.class.getSimpleName();
 
+        private String[] getWeatherDataFromJson(String forecastJsonStr, int numMovies)
+                throws JSONException {
+
+            // These are the names of the JSON objects that need to be extracted.
+            final String OWM_RESUTS = "results";
+            final String OWM_POSTER = "poster_path";
+            final String OWM_OVERVIEW = "overview";
+            final String OWM_TITLE = "original_title";
+            final String OWM_RELEASE = "release_date";
+            final String OWM_VOTE = "vote_average";
+
+            JSONObject forecastJson = new JSONObject(forecastJsonStr);
+            JSONArray movieArray = forecastJson.getJSONArray(OWM_RESUTS);
+
+            Log.v(LOG_TAG, "movieArray length " + movieArray.length());
+
+            String[] resultStrs = new String[numMovies];
+            for (int i = 0; i < movieArray.length(); i++) {
+
+                String title;
+                String poster;
+                String overview;
+                String release;
+                String vote;
+
+                // Get the JSON object representing the movie
+                JSONObject movieForecast = movieArray.getJSONObject(i);
+
+                title = movieForecast.getString(OWM_TITLE);
+                poster = movieForecast.getString(OWM_POSTER);
+                overview = movieForecast.getString(OWM_OVERVIEW);
+                release = movieForecast.getString(OWM_RELEASE);
+                vote = movieForecast.getString(OWM_VOTE);
+
+                resultStrs[i] = title + " -- " + poster + " -- " + overview + " -- " + release + " -- " + vote;
+            }
+
+            for (String s : resultStrs) {
+                Log.v(LOG_TAG, "Forecast entry: " + s);
+            }
+            return resultStrs;
+        }
+
         @Override
-        protected Void doInBackground(String... params) {
+        protected String[] doInBackground(String... params) {
             // These two need to be declared outside the try/catch
             // so that they can be closed in the finally block.
             HttpURLConnection urlConnection = null;
@@ -84,6 +131,8 @@ public class MainActivityFragment extends Fragment {
 
             // Will contain the raw JSON response as a string.
             String forecastJsonStr = null;
+
+            int numMovies = 20;
 
             try {
                 // Construct the URL for the OpenWeatherMap query
@@ -149,6 +198,15 @@ public class MainActivityFragment extends Fragment {
                     }
                 }
             }
+
+            try {
+                return getWeatherDataFromJson(forecastJsonStr, numMovies);
+            } catch (JSONException e) {
+                Log.e(LOG_TAG, e.getMessage(), e);
+                e.printStackTrace();
+            }
+
+            // This will only happen if there was an error getting or parsing the forecast.
             return null;
         }
     }
