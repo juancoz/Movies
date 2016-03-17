@@ -5,6 +5,9 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -30,6 +33,8 @@ public class MainActivityFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+        setHasOptionsMenu(true);
+
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
         GridView gridview = (GridView) rootView.findViewById(R.id.gridview);
@@ -46,6 +51,22 @@ public class MainActivityFragment extends Fragment {
         return rootView;
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        // super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.mainactivityfragment, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_refresh) {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     public class FetchMoviesTask extends AsyncTask<Void, Void, Void> {
 
