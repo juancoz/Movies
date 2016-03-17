@@ -99,7 +99,7 @@ public class MainActivityFragment extends Fragment {
             JSONObject forecastJson = new JSONObject(forecastJsonStr);
             JSONArray movieArray = forecastJson.getJSONArray(OWM_RESUTS);
 
-            Log.v(LOG_TAG, "movieArray length " + movieArray.length());
+            // Log.v(LOG_TAG, "movieArray length " + movieArray.length());
 
             String[] resultStrs = new String[numMovies];
             for (int i = 0; i < movieArray.length(); i++) {
@@ -122,9 +122,9 @@ public class MainActivityFragment extends Fragment {
                 resultStrs[i] = title + " -- " + poster + " -- " + overview + " -- " + release + " -- " + vote;
             }
 
-            for (String s : resultStrs) {
-                Log.v(LOG_TAG, "Forecast entry: " + s);
-            }
+//            for (String s : resultStrs) {
+//                Log.v(LOG_TAG, "Forecast entry: " + s);
+//            }
             return resultStrs;
         }
 
@@ -155,7 +155,7 @@ public class MainActivityFragment extends Fragment {
 
                 URL url = new URL(builtUri.toString());
 
-                Log.v(LOG_TAG, "Built URI " + builtUri.toString());
+                // Log.v(LOG_TAG, "Built URI " + builtUri.toString());
 
                 // Create the request to OpenWeatherMap, and open the connection
                 urlConnection = (HttpURLConnection) url.openConnection();
@@ -185,7 +185,7 @@ public class MainActivityFragment extends Fragment {
                 }
                 forecastJsonStr = buffer.toString();
 
-                Log.v(LOG_TAG, "Forecast JSON string: " + forecastJsonStr);
+                // Log.v(LOG_TAG, "Forecast JSON string: " + forecastJsonStr);
 
             } catch (IOException e) {
                 Log.e(LOG_TAG, "Error ", e);
