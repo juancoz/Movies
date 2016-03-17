@@ -31,7 +31,12 @@ import java.net.URL;
  */
 public class MainActivityFragment extends Fragment {
 
+    ImageAdapter imageAdapter;
+    View rootView;
+    GridView gridview;
+
     public MainActivityFragment() {
+
     }
 
     @Override
@@ -40,10 +45,11 @@ public class MainActivityFragment extends Fragment {
 
         setHasOptionsMenu(true);
 
-        View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+        rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
-        GridView gridview = (GridView) rootView.findViewById(R.id.gridview);
-        gridview.setAdapter(new ImageAdapter(rootView.getContext()));
+        gridview = (GridView) rootView.findViewById(R.id.gridview);
+        imageAdapter = new ImageAdapter(rootView.getContext());
+        gridview.setAdapter(imageAdapter);
 
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -208,6 +214,40 @@ public class MainActivityFragment extends Fragment {
 
             // This will only happen if there was an error getting or parsing the forecast.
             return null;
+        }
+
+        @Override
+        protected void onPostExecute(String[] result) {
+            super.onPostExecute(result);
+
+            if (result != null){
+                final String BASE_URL = "http://image.tmdb.org/t/p/";
+                final String SIZE = "w185";
+                String[] uriPoster = new String[result.length];
+
+                for (int i = 0; i < result.length; i++){
+                    String[] movie = result[i].split(" -- ");
+                    String poster = movie[1];
+
+                    Uri builtUri = Uri.parse(BASE_URL).buildUpon()
+                            .appendPath(SIZE)
+                            .appendPath(poster.substring(1, poster.length()))
+                            .build();
+
+
+                    uriPoster[i] = builtUri.toString();
+                }
+
+                imageAdapter = new ImageAdapter(rootView.getContext(), uriPoster);
+                gridview.setAdapter(imageAdapter);
+            }
+
+            if (result != null) {
+                for (String dayForecastStr : result) {
+                    // mForecastAdapter.add(dayForecastStr);
+                }
+                // New data is back from the server.  Hooray!
+            }
         }
     }
 }

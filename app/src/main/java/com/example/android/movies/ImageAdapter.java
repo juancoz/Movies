@@ -14,13 +14,26 @@ import com.bumptech.glide.Glide;
  */
 public class ImageAdapter extends BaseAdapter {
     private Context mContext;
+    private String[] mImageString;
+    private boolean mFlag;
 
     public ImageAdapter(Context c) {
         mContext = c;
+        mFlag = false;
+    }
+
+    public ImageAdapter(Context c, String[] images){
+        mContext = c;
+        mImageString = images;
+        mFlag = true;
     }
 
     public int getCount() {
-        return mThumbIds.length;
+        if (mFlag) {
+            return mImageString.length;
+        }else{
+            return mThumbIds.length;
+        }
     }
 
     public Object getItem(int position) {
@@ -42,7 +55,11 @@ public class ImageAdapter extends BaseAdapter {
 
         imageView = (ImageView) convertView.findViewById(R.id.grid_item_forecast_imageview);
         // imageView.setImageResource(mThumbIds[position]);
-        Glide.with(imageView.getContext()).load(mThumbIds[position]).into(imageView);
+        if (mFlag){
+            Glide.with(imageView.getContext()).load(mImageString[position]).into(imageView);
+        }else {
+            Glide.with(imageView.getContext()).load(mThumbIds[position]).into(imageView);
+        }
         return imageView;
     }
 
