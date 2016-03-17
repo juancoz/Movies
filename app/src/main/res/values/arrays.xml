@@ -1,2 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string-array name="pref_movies_options">
+        <item>@string/pref_movies_label_popular</item>
+        <item>@string/pref_movies_label_top</item>
+    </string-array>
+
+    <string-array name="pref_movies_values">
+        <item>@string/pref_movies_popular</item>
+        <item>@string/pref_movies_top</item>
+    </string-array>
+</resources>
