@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
+
 /**
  * Created by Juan Carlos on 16/03/2016.
  */
@@ -39,7 +41,8 @@ public class ImageAdapter extends BaseAdapter {
         }
 
         imageView = (ImageView) convertView.findViewById(R.id.grid_item_forecast_imageview);
-        imageView.setImageResource(mThumbIds[position]);
+        // imageView.setImageResource(mThumbIds[position]);
+        Glide.with(imageView.getContext()).load(mThumbIds[position]).into(imageView);
         return imageView;
     }
 
