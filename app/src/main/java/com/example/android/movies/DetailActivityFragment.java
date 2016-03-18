@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -32,7 +33,7 @@ public class DetailActivityFragment extends Fragment {
             String forecastStr = intent.getStringExtra(Intent.EXTRA_TEXT);
 
             // Split the String
-            String[] splitFor = forecastStr.split(" -- ");
+            String[] splitFor = forecastStr.split(" ---- ");
 
             // Load the title string
             ((TextView) rootView.findViewById(R.id.title_textview))
@@ -50,16 +51,23 @@ public class DetailActivityFragment extends Fragment {
             Glide.with(imageView.getContext()).load(builtUri).into(imageView);
 
             // Load the overview text
-            ((TextView) rootView.findViewById(R.id.overview_textview))
-                    .setText(splitFor[2]);
+            WebView mWebView = (WebView) rootView.findViewById(R.id.overview_webview);
+
+            String text = "<html><body>"
+                    + "<p align=\"justify\">"
+                    + splitFor[2]
+                    + "</p> "
+                    + "</body></html>";
+
+            mWebView.loadData(text, "text/html", "utf-8");
 
             // Load release text
             ((TextView) rootView.findViewById(R.id.release_textview))
-                    .setText(splitFor[3]);
+                    .setText(splitFor[3].replaceAll("-","/"));
 
             //Load vote text
             ((TextView) rootView.findViewById(R.id.vote_textview))
-                    .setText(splitFor[4] + " / 10");
+                    .setText(splitFor[4] + "/10");
         }
 
         return rootView;

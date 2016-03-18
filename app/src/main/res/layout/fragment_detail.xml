@@ -32,8 +32,9 @@
                 android:layout_alignTop="@+id/poster_imageview"
                 android:layout_toRightOf="@+id/poster_imageview"
                 android:text="@string/string_title"
-                android:textSize="24dp"
-                android:textStyle="bold|italic" />
+                android:textAppearance="?android:textAppearanceLarge"
+                android:textStyle="bold|italic"
+                android:layout_marginTop="8dp"/>
 
             <TextView
                 android:id="@+id/release_textview"
@@ -43,7 +44,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_toRightOf="@+id/poster_imageview"
                 android:text="@string/string_release"
-                android:textSize="18dp" />
+                android:textAppearance="?android:textAppearanceMedium" />
 
             <TextView
                 android:id="@+id/vote_textview"
@@ -53,12 +54,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_toRightOf="@+id/poster_imageview"
                 android:text="@string/string_vote"
-                android:textSize="18dp" />
-
-            <TextView
-                android:id="@+id/detail_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:textAppearance="?android:textAppearanceSmall" />
         </RelativeLayout>
 
         <View
@@ -66,12 +62,12 @@
             android:layout_height="1dp"
             android:background="#262626" />
 
-        <TextView
-            android:id="@+id/overview_textview"
+        <WebView
+            android:id="@+id/overview_webview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="3dp"
             android:text="@string/string_overview"
-            android:textSize="16dp" />
+            android:textSize="16sp" />
     </LinearLayout>
 </ScrollView>

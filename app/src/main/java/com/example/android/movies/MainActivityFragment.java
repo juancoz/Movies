@@ -141,7 +141,7 @@ public class MainActivityFragment extends Fragment {
                 release = movieForecast.getString(OWM_RELEASE);
                 vote = movieForecast.getString(OWM_VOTE);
 
-                resultStrs[i] = title + " -- " + poster + " -- " + overview + " -- " + release + " -- " + vote;
+                resultStrs[i] = title + " ---- " + poster + " ---- " + overview + " ---- " + release + " ---- " + vote;
             }
 
 //            for (String s : resultStrs) {
@@ -248,7 +248,7 @@ public class MainActivityFragment extends Fragment {
                 String[] uriPoster = new String[result.length];
 
                 for (int i = 0; i < result.length; i++) {
-                    String[] movie = result[i].split(" -- ");
+                    String[] movie = result[i].split(" ---- ");
                     String poster = movie[1];
 
                     Uri builtUri = Uri.parse(BASE_URL).buildUpon()
